@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public GameObject montacargas;
+    public GameObject player;
 
     public Vector3 offset;
 
@@ -10,16 +10,16 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         // Ensure that the camera starts with the correct offset.
-        transform.position = montacargas.transform.position + offset;
+        transform.position = player.transform.position + offset;
     }
 
     // LateUpdate is called once per frame after all Update functions have been completed.
     void LateUpdate()
     {
-        Vector3 targetPosition = montacargas.transform.position + offset;
+        Vector3 targetPosition = player.transform.position + offset;
 
         transform.position = targetPosition;
 
-        transform.LookAt(montacargas.transform);
+        transform.LookAt(player.transform);
     }
 }
