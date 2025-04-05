@@ -7,6 +7,9 @@ public class Character : MonoBehaviour
     public float speed = 5f;
     public float rotationSpeed = 700f;  // Rotation speed
 
+    private string currentObject = "";
+    private int currentQuantity = 0;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -38,5 +41,25 @@ public class Character : MonoBehaviour
         }
 
         characterController.Move(move * Time.deltaTime * speed);
+    }
+
+    // Public methods to modify private variables
+    public void SetCurrentObject(string newObject)
+    {
+        currentObject = newObject;
+    }
+
+    public void SetCurrentQuantity(int newQuantity)
+    {
+        currentQuantity = newQuantity;
+    }
+    public string GetCurrentObject()
+    {
+        return currentObject;
+    }
+
+    public int GetCurrentQuantity()
+    {
+        return currentQuantity;
     }
 }
