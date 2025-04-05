@@ -1034,7 +1034,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 919132147702965081}
-  offset: {x: 0, y: 5, z: -10}
+  offset: {x: 0, y: 5, z: -5}
 --- !u!1 &358860068
 GameObject:
   m_ObjectHideFlags: 0
@@ -6603,7 +6603,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &919132147702965083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6616,8 +6616,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7662d7d2224d24c4ca717540d2baa2d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
   characterController: {fileID: 0}
-  speed: 5
+  speed: 3
+  rotationSpeed: 400
 --- !u!1 &919132148035618119
 GameObject:
   m_ObjectHideFlags: 0
