@@ -30,8 +30,6 @@ public class Montacargas : MonoBehaviour, IInteractable
                 string currentObject = characterScript.GetCurrentObject();
                 int quantity = characterScript.GetCurrentQuantity();
 
-                Debug.Log("aaaaa");
-
                 // Check if the first element in the pedidos dictionary matches the current character's object and quantity
                 if (pedidos.Count > 0)
                 {
@@ -74,4 +72,17 @@ public class Montacargas : MonoBehaviour, IInteractable
             Debug.LogWarning("Target GameObject is not assigned.");
         }
     }
+
+    public KeyValuePair<string, int> GetFirstPedido()
+    {
+        if (pedidos.Count > 0)
+        {
+            var enumerator = pedidos.GetEnumerator();
+            enumerator.MoveNext(); // Move to the first element
+            return enumerator.Current; // Returns the first key-value pair
+        }
+        return default(KeyValuePair<string, int>); // Return default if the dictionary is empty
+    }
+
+
 }
