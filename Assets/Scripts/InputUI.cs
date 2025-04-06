@@ -14,41 +14,22 @@ public class InputUI : MonoBehaviour
         {
             // Trigger your action here
             TriggerAction();
+            gameObject.SetActive(false); // Deactivates the object this script is attached to
+
+            // Clear the input field
+            inputField.text = string.Empty; // Clears the input field
         }
     }
 
     void TriggerAction()
     {
-        Debug.Log("Enter key pressed and input is not empty!");
+        // Access the Character script on the target GameObject
+        Character characterScript = targetObject.GetComponent<Character>();
+        int quantity = int.Parse(inputField.text);
 
-        // Check if the targetObject is assigned
-        if (targetObject != null)
-        {
-            // Access the Character script on the target GameObject
-            Character characterScript = targetObject.GetComponent<Character>();
-
-            if (characterScript != null)
-            {
-
-                int quantity = int.Parse(inputField.text);
-
-                Debug.Log(popupText.text);
-
-                string selectedObject = popupText.text.Substring(popupText.text.Length - 4);
-                // Set variables in the Character script
-                characterScript.SetCurrentObject(selectedObject); // Set current object
-                characterScript.SetCurrentQuantity(quantity);
-
-                Debug.Log("Player has object " + selectedObject + " in quantity " + quantity);
-            }
-            else
-            {
-                Debug.LogWarning("The assigned GameObject does not have the 'Character' script.");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Target GameObject is not assigned.");
-        }
+        string selectedObject = popupText.text.Substring(popupText.text.Length - 4);
+        // Set variables in the Character script
+        characterScript.SetCurrentObject(selectedObject); // Set current object
+        characterScript.SetCurrentQuantity(quantity);
     }
 }

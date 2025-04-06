@@ -8,6 +8,9 @@ public class Montacargas : MonoBehaviour, IInteractable
     [SerializeField]
     private GameObject targetObject;    // Reference to the GameObject that holds the Character script
 
+    [SerializeField]
+    private GameObject popup; // Reference to the Popup UI panel
+
     void Start()
     {
         // Initialize the pedidos dictionary with some example data
@@ -18,58 +21,37 @@ public class Montacargas : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        // Check if the targetObject is assigned
-        if (targetObject != null)
+        // Access the Character script on the target GameObject
+        Character characterScript = targetObject.GetComponent<Character>();
+        // Retrieve current item and quantity from the character script
+        string currentObject = characterScript.GetCurrentObject();
+        int quantity = characterScript.GetCurrentQuantity();
+
+        // Check if the first element in the pedidos dictionary matches the current character's object and quantity
+        if (pedidos.Count > 0)
         {
-            // Access the Character script on the target GameObject
-            Character characterScript = targetObject.GetComponent<Character>();
+            var firstPedido = pedidos.Keys.GetEnumerator();
+            firstPedido.MoveNext();
+            string firstKey = firstPedido.Current;
+            int requiredQuantity = pedidos[firstKey];
 
-            if (characterScript != null)
+            // Check if currentObject and quantity match the first element in the dictionary
+            if (currentObject == firstKey && quantity >= requiredQuantity)
             {
-                // Retrieve current item and quantity from the character script
-                string currentObject = characterScript.GetCurrentObject();
-                int quantity = characterScript.GetCurrentQuantity();
 
-                // Check if the first element in the pedidos dictionary matches the current character's object and quantity
-                if (pedidos.Count > 0)
-                {
-                    var firstPedido = pedidos.Keys.GetEnumerator();
-                    firstPedido.MoveNext();
-                    string firstKey = firstPedido.Current;
-                    int requiredQuantity = pedidos[firstKey];
-
-                    // Check if currentObject and quantity match the first element in the dictionary
-                    if (currentObject == firstKey && quantity >= requiredQuantity)
-                    {
-
-                        characterScript.SetCurrentObject("");
-                        characterScript.SetCurrentQuantity(0);
-                        // Pop the first element from the pedidos dictionary
-                        pedidos.Remove(firstKey);
-
-                        // Debug message for successful interaction
-                        Debug.Log("Pedido completed! Removed " + firstKey + " from pedidos.");
-                    }
-                    else
-                    {
-                        // Print a debug message if the condition isn't met
-                        Debug.Log("Condition not met. Player's current object: " + currentObject + ", Quantity: " + quantity +
-                                  ". Required: " + firstKey + ", Quantity: " + requiredQuantity);
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning("No more pedidos left in the list.");
-                }
+                characterScript.SetCurrentObject("");
+                characterScript.SetCurrentQuantity(0);
+                // Pop the first element from the pedidos dictionary
+                pedidos.Remove(firstKey);
             }
             else
             {
-                Debug.LogWarning("The assigned GameObject does not have the 'Character' script.");
+                popup.SetActive(true); // Show the popup
             }
         }
         else
         {
-            Debug.LogWarning("Target GameObject is not assigned.");
+            Debug.LogWarning("No more pedidos left in the list.");
         }
     }
 
