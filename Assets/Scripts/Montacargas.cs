@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
 
 public class Montacargas : MonoBehaviour, IInteractable
 {
@@ -10,6 +11,7 @@ public class Montacargas : MonoBehaviour, IInteractable
 
     [SerializeField]
     private GameObject popup; // Reference to the Popup UI panel
+    private TMP_Text popupText; // Reference to the TMP Text component
 
     void Start()
     {
@@ -17,6 +19,9 @@ public class Montacargas : MonoBehaviour, IInteractable
         pedidos.Add("P2C2", 3);
         pedidos.Add("P1C4", 4);
         pedidos.Add("P1C3", 1);
+
+        // Get the TextMesh Pro Text component from the popup
+        popupText = popup.GetComponentInChildren<TMP_Text>();
     }
 
     public void Interact()
@@ -36,7 +41,7 @@ public class Montacargas : MonoBehaviour, IInteractable
             int requiredQuantity = pedidos[firstKey];
 
             // Check if currentObject and quantity match the first element in the dictionary
-            if (currentObject == firstKey && quantity >= requiredQuantity)
+            if (currentObject == firstKey && quantity == requiredQuantity)
             {
 
                 characterScript.SetCurrentObject("");
@@ -44,8 +49,26 @@ public class Montacargas : MonoBehaviour, IInteractable
                 // Pop the first element from the pedidos dictionary
                 pedidos.Remove(firstKey);
             }
+            else if (currentObject == firstKey && quantity < requiredQuantity)
+            {
+                // Update the quantity value in the pedidos dictionary
+                pedidos[firstKey] = requiredQuantity - quantity;  // Reduces the required quantity by the current quantity
+                characterScript.SetCurrentQuantity(0);
+                popupText.text = "You have selected correct product but not enough quantity.\n" + pedidos[firstKey] + " units of " + firstKey + " are still needed.";
+                popup.SetActive(true); // Show the popup
+            }
+            else if (currentObject == firstKey && quantity > requiredQuantity)
+            {
+                characterScript.SetCurrentObject("");
+                characterScript.SetCurrentQuantity(0);
+                // Pop the first element from the pedidos dictionary
+                pedidos.Remove(firstKey);
+                popupText.text = "You have selected correct product but too many units.\nDiscarding " + (quantity - requiredQuantity) + " units of " + firstKey + ".";
+                popup.SetActive(true); // Show the popup
+            }
             else
             {
+                popupText.text = "You have selected the wrong product or wrong quantity.\nPlease revise it.";
                 popup.SetActive(true); // Show the popup
             }
         }
